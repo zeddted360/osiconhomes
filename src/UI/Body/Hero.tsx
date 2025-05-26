@@ -1,18 +1,19 @@
 import { Calendar } from 'lucide-react';
 import React from 'react';
 import Image from 'next/image'; 
+import Link from "next/link";
 
 const Hero = () => {
   return (
     <section className="relative z-10 flex items-center min-h-screen px-6 lg:px-12">
       {/* Background Image */}
       <Image
-        src="/Real_estate_Hero.jpg" 
+        src="/Real_estate_Hero.jpg"
         alt="Real Estate Hero Background"
-        fill 
-        style={{ objectFit: 'cover' }} 
-        className="absolute inset-0 z-0" 
-        quality={100} 
+        fill
+        style={{ objectFit: "cover" }}
+        className="absolute inset-0 z-0"
+        quality={100}
         priority
       />
       {/* Overlay for better text readability */}
@@ -46,17 +47,23 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="group relative px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-2xl shadow-2xl hover:shadow-amber-500/25 transition-all duration-300 transform hover:scale-105 overflow-hidden">
+              <Link
+                href={"/book-inspection"}
+                className="group relative px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-2xl shadow-2xl hover:shadow-amber-500/25 transition-all duration-300 transform hover:scale-105 overflow-hidden"
+              >
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center justify-center space-x-3">
                   <Calendar className="w-5 h-5" />
                   <span className="text-lg">Book Inspection</span>
                 </div>
-              </button>
+              </Link>
 
-              <button className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-                <span className="text-lg">View Properties</span>
-              </button>
+              <Link
+                href="/properties"
+                className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
+              >
+                <span className="text-lg text-center block">View Properties</span>
+              </Link>
             </div>
 
             {/* Stats */}

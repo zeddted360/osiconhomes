@@ -1,4 +1,3 @@
-import Header from "@/UI/Header/Header";
 import  Hero from "@/UI/Body/Hero";
 import About from "@/UI/Body/About";
 import ServicesSection from "@/UI/Body/Services";
@@ -7,6 +6,7 @@ import Testimonials from "@/UI/Body/Testimonial";
 import Affiliate from "@/UI/Body/Affiliate";
 import FAQ from "@/UI/Body/Faq";
 import Contact from "@/UI/Body/Contact";
+
 const Dashboard = () => {
   
   return (

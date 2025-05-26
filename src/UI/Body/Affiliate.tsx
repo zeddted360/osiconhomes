@@ -25,7 +25,7 @@ export default function Affiliate() {
             Join our affiliate program and start earning extra income today.
             Looking for a way to boost your earnings? This is it!
           </p>
-          <Link href="/signup">
+          <Link href="/sign-up">
             <button className="px-8 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-lg shadow-md hover:from-amber-500 hover:to-orange-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-50">
               Become an Affiliate
             </button>

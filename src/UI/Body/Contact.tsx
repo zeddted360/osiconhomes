@@ -1,5 +1,6 @@
 import React from "react";
 import { MapPin, Mail, Phone } from "lucide-react";
+import Link from "next/link";
 
 const Contact = () => {
   return (
@@ -83,18 +84,18 @@ const Contact = () => {
                     Email:
                   </h3>
                   <div className="space-y-2">
-                    <a
+                    <Link
                       href="mailto:info@osiconhomes.com"
                       className="block text-amber-600 hover:text-amber-800 transition-colors duration-200 font-medium"
                     >
                       info@osiconhomes.com
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       href="mailto:support@osiconhomes.com"
                       className="block text-amber-600 hover:text-amber-800 transition-colors duration-200 font-medium"
                     >
                       support@osiconhomes.com
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -111,24 +112,24 @@ const Contact = () => {
                     Call:
                   </h3>
                   <div className="space-y-2">
-                    <a
+                    <Link
                       href="tel:+2349048681289"
                       className="block text-amber-600 hover:text-amber-800 transition-colors duration-200 font-medium"
                     >
-                      +234 904 868 1289
-                    </a>
-                    <a
+                      +234 9132502360
+                    </Link>
+                    <Link
                       href="tel:+2348074824989"
                       className="block text-amber-600 hover:text-amber-800 transition-colors duration-200 font-medium"
                     >
-                      +234 807 482 4989
-                    </a>
-                    <a
+                      +234 7025786581
+                    </Link>
+                    <Link
                       href="tel:+2347049073432"
                       className="block text-amber-600 hover:text-amber-800 transition-colors duration-200 font-medium"
                     >
-                      +234 704 907 3432
-                    </a>
+                      +234 7016720434
+                    </Link>
                   </div>
                 </div>
               </div>

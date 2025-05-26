@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const HotSales = () => {
   return (
@@ -40,7 +40,7 @@ const HotSales = () => {
             <button className="group relative px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative flex items-center space-x-2">
-                <span>Learn More</span>
+                <Link href={"/properties"}>Learn More</Link>
                 <svg
                   className="w-4 h-4 transition-transform group-hover:translate-x-1"
                   fill="none"
@@ -86,9 +86,12 @@ const HotSales = () => {
                 <div className="mb-4">
                   <div className="inline-flex items-center space-x-3 px-4 py-2 rounded-full bg-gradient-to-r from-amber-400/20 to-orange-500/20 border border-amber-400/30">
                     <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-                    <span className="text-amber-700 font-semibold text-xs uppercase tracking-wider">
-                      Sell To Us
-                    </span>
+                    <Link
+                      href="/sell-property"
+                      className="text-amber-700 font-semibold text-xs uppercase tracking-wider"
+                    >
+                      Sell to us
+                    </Link>
                   </div>
                 </div>
 
@@ -111,10 +114,13 @@ const HotSales = () => {
           </div>
 
           {/* Sell to Us Button */}
-          <button className="group relative w-full lg:w-1/2 px-6 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden">
+          <Link
+            href="/sell-property"
+            className="group relative text-center block w-full lg:w-1/2 px-6 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden"
+          >
             <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <span className="relative">Sell to us</span>
-          </button>
+          </Link>
         </div>
 
         <div className="partnarship_offers flex py-8 justify-between">
@@ -127,7 +133,9 @@ const HotSales = () => {
 
           <button className="group relative px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <span className="relative">Invest Now</span>
+            <Link href="/invest-now" className="relative">
+              Invest Now
+            </Link>
           </button>
         </div>
       </div>

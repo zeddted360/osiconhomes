@@ -1,6 +1,7 @@
 import { Building, HelpCircle, Home, Settings } from "lucide-react";
 import React from "react";
 import Image from "next/image"; 
+import Link from "next/link";
 
 export default function About() {
   return (
@@ -24,13 +25,13 @@ export default function About() {
                 {/* Main image container */}
                 <div className="relative overflow-hidden rounded-3xl shadow-2xl transform group-hover:scale-[1.02] transition-transform duration-500">
                   <Image
-                    src="/real-estate-consultancy.png" 
+                    src="/real-estate-consultancy.png"
                     alt="Osicon Homes Real Estate Consultancy"
-                    width={500} 
-                    height={625} 
+                    width={500}
+                    height={625}
                     style={{ objectFit: "cover" }}
                     className="w-full h-auto"
-                    quality={85} 
+                    quality={85}
                     priority
                   />
                   {/* Subtle overlay for polish */}
@@ -109,7 +110,7 @@ export default function About() {
                     },
                     {
                       icon: Settings,
-                      title: "Management",
+                      title: "Home Management",
                       desc: "Complete property care",
                     },
                     {
@@ -144,7 +145,9 @@ export default function About() {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="relative flex items-center justify-center space-x-3">
-                    <span className="text-lg">Join Us</span>
+                    <Link href={"/sign-up"} className="text-lg">
+                      Join Us
+                    </Link>
                     <div className="w-5 h-5 border-2 border-white rounded-full flex items-center justify-center">
                       <div className="w-2 h-2 bg-white rounded-full transform group-hover:translate-x-1 transition-transform duration-300"></div>
                     </div>
