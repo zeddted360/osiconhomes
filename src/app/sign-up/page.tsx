@@ -1,85 +1,36 @@
-import { Metadata } from "next";
-import Image from "next/image";
-import SignUpForm from "@/components/SignUpForm";
+import MemberForm from "@/components/MemberForm";
+import Link from "next/link";
+import React from "react";
 
-// SEO Metadata
-export const metadata: Metadata = {
-  title: "Sign Up | Osicon Homes",
-  description:
-    "Create an account with Osicon Homes to explore luxury properties in Port Harcourt & Owerri, Nigeria. Sign up now to book inspections and view homes!",
-  keywords: [
-    "sign up Osicon Homes",
-    "create account real estate Nigeria",
-    "Port Harcourt property sign up",
-    "Owerri luxury homes account",
-  ],
-  openGraph: {
-    title: "Sign Up | Osicon Homes",
-    description:
-      "Join Osicon Homes to explore properties in Port Harcourt & Owerri. Sign up today!",
-    url: "https://www.osiconhomes.com/sign-up",
-    siteName: "Osicon Homes",
-    images: [
-      {
-        url: "https://www.osiconhomes.com/og-image-signup.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Sign Up with Osicon Homes",
-      },
-    ],
-    locale: "en_NG",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sign Up | Osicon Homes",
-    description:
-      "Join Osicon Homes to explore properties in Port Harcourt & Owerri. Sign up today!",
-    images: ["https://www.osiconhomes.com/twitter-image-signup.jpg"],
-    creator: "@OsiconHomes",
-  },
-  alternates: {
-    canonical: "https://www.osiconhomes.com/sign-up",
-  },
+const SignUp = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-white px-4 py-10">
+      <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 md:p-12 space-y-6">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-amber-600">
+            Become a Valued Member
+          </h1>
+          <p className="text-gray-600 mt-2 text-lg">
+            Join our membership program and enjoy up to{" "}
+            <span className="text-amber-500 font-semibold">15% profit</span> on
+            every property sale you refer. Let’s grow together!
+          </p>
+        </div>
+
+        <MemberForm />
+
+        <p className="text-sm text-center text-gray-500 mt-4">
+          Already a member?{" "}
+          <Link
+            href="/login"
+            className="text-amber-600 hover:underline font-medium"
+          >
+            Log in here
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
 };
 
-export default function SignUp() {
-  return (
-    <section
-      className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-gray-100 to-amber-50 px-4 py-12 lg:py-16 overflow-hidden"
-      aria-labelledby="sign-up-heading"
-    >
-      {/* Subtle Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5 pointer-events-none" />
-
-      <div className="relative z-10 max-w-lg w-full mx-auto">
-        <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6 border border-amber-200/50">
-          {/* Logo */}
-          <div className="flex justify-center mb-6">
-            <Image
-              src="/OSICON_LOGO.png"
-              alt="Osicon Homes Logo"
-              width={80}
-              height={80}
-              className="object-contain"
-              priority
-            />
-          </div>
-
-          {/* Header */}
-          <h2
-            id="sign-up-heading"
-            className="text-xl sm:text-4xl font-bold text-gray-900 text-center mb-4"
-            role="heading"
-            aria-level={2}
-          >
-            Let’s get you started
-          </h2>
-
-          {/* Client Component for Form */}
-          <SignUpForm />
-        </div>
-      </div>
-    </section>
-  );
-}
+export default SignUp;

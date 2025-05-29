@@ -3,8 +3,8 @@ import "./globals.css";
 import { ReactNode } from "react";
 import Header from "@/UI/Header/Header";
 import Footer from "@/UI/Footer";
-
-
+import { Toaster } from "react-hot-toast";
+import SessionWrapper from "@/components/SessionWrapper";
 export const metadata: Metadata = {
   title: {
     default: "Osicon Homes - Real Estate & Construction in Nigeria",
@@ -58,16 +58,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({children}:{children:ReactNode}) {
-  
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased`}
-      >
-        <Header/>
-        {children}
-        <Footer/>
+      <body className={`antialiased`}>
+        <Toaster position="top-right" reverseOrder={false} />
+        <SessionWrapper>
+          <Header />
+          {children}
+          <Footer />
+        </SessionWrapper>
       </body>
     </html>
   );
