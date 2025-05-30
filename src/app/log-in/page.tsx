@@ -47,19 +47,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function SignIn({ searchParams }: { searchParams: SearchParams }) {
+export default async function SignIn({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
   const session = await auth();
   if (session?.user) {
     redirect("/");
-
   }
   const SearchParams = await searchParams;
-  
+
   return (
-    <section
-      aria-labelledby="sign-up-heading"
-    >
-          <Login searchParams={SearchParams}/>
+    <section aria-labelledby="sign-up-heading">
+      <Login searchParams={SearchParams} />
     </section>
   );
 }

@@ -44,12 +44,9 @@ const SubscriberSchema: Schema<ISubscriber> = new Schema(
     },
   },
     {
-        timestamps: true, // Automatically manage createdAt and updatedAt fields
-        collection: "subscribers", // Specify the collection name
+        timestamps: true, 
     }
 );
-
-SubscriberSchema.index({ email: 1 }, { unique: true });
 
 // Export the model
 const Subscriber =

@@ -32,10 +32,11 @@ export interface Bde {
 export default async function BdeProfile({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   await connectDb();
-  const bde = await Bde.findById(await params.id)
+  const { id } = await  params;
+  const bde = await Bde.findById(id)
     .select("firstname lastname username email phone referralCode isVerified")
     .lean();
 
