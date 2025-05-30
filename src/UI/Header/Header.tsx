@@ -25,6 +25,7 @@ const Header = () => {
   const pathname = usePathname();
   const { data: session, status } = useSession();
 
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -52,9 +53,28 @@ const Header = () => {
     item: { href: string }
   ) => {
     e.preventDefault();
-    const paths = ["/properties", "/bde-join"];
+    const paths = [
+      "/properties",
+      "/bde-join",
+      "/log-in",
+      "/sign-up",
+      "/learn-more",
+      "/get-started"
+    ];
     const isPathIncluded = paths.includes(pathname);
-    isPathIncluded ? router.push("/" + item.href) : router.push(item.href);
+
+    if (item.href.startsWith("#")) {
+      if (isPathIncluded) {
+        const section = document.querySelector(item.href);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        } else {
+          router.push(`/${item.href}`);
+        }
+      }
+    } else {
+      router.push(item.href);
+    }
   };
 
   const handleSignOut = async () => {

@@ -8,7 +8,6 @@ import FAQ from "@/UI/Body/Faq";
 import Contact from "@/UI/Body/Contact";
 
 const Dashboard = () => {
-  
   return (
     <div id="home" className="min-h-screen relative overflow-hidden">
       {/* Background with overlay */}

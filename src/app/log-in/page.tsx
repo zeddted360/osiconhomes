@@ -51,6 +51,7 @@ export default async function SignIn({ searchParams }: { searchParams: SearchPar
   const session = await auth();
   if (session?.user) {
     redirect("/");
+
   }
   const SearchParams = await searchParams;
   

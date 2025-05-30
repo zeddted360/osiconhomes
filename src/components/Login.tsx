@@ -118,7 +118,7 @@ export default function Login({ searchParams }: LoginProps) {
         <p className="text-center text-sm text-gray-500">
           Don't have an account?{" "}
           <Link
-            href="/auth/signup"
+            href="/sign-up"
             className="text-indigo-600 hover:underline font-medium"
           >
             Sign up

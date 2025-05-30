@@ -139,20 +139,19 @@ export default function About() {
 
               {/* CTA Button */}
               <div className="pt-6">
-                <button
+                <Link
+                  href="/sign-up"
                   aria-label="Join Osicon Homes"
-                  className="group relative px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden"
+                  className="group inline-block relative px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-2xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="relative flex items-center justify-center space-x-3">
-                    <Link href={"/sign-up"} className="text-lg">
-                      Join Us
-                    </Link>
+                    <span className="text-lg">Join Us</span>
                     <div className="w-5 h-5 border-2 border-white rounded-full flex items-center justify-center">
                       <div className="w-2 h-2 bg-white rounded-full transform group-hover:translate-x-1 transition-transform duration-300"></div>
                     </div>
                   </div>
-                </button>
+                </Link>
               </div>
 
               {/* Company stats */}

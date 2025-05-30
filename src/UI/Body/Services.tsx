@@ -15,6 +15,7 @@ import {
   LucideProps,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 // Define TypeScript interfaces for type safety
 interface Service {
@@ -365,7 +366,7 @@ const ServicesSection: React.FC = () => {
             reality.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
+            <Link href="/get-started"
               aria-label="Get started with your project"
               className="group relative px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden"
             >
@@ -374,13 +375,13 @@ const ServicesSection: React.FC = () => {
                 <span>Get Started</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </div>
-            </button>
-            <button
+            </Link>
+            <Link href="/learn-more"
               aria-label="Learn more about our services"
               className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-xl transition-all duration-300 transform hover:scale-105"
             >
               Learn More
-            </button>
+            </Link>
           </div>
         </div>
       </div>

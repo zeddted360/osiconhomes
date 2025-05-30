@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 
 const Hero = () => {
   const { data: session } = useSession();
-
   return (
     <section className="relative z-10 flex items-center min-h-screen px-4 sm:px-6 lg:px-12">
       {/* Background Image */}
