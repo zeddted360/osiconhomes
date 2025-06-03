@@ -12,6 +12,7 @@ import {
   LogIn,
   LogOut,
   User,
+  House
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -44,6 +45,7 @@ const Header = () => {
     { icon: Info, label: "About", href: "#about" },
     { icon: Building, label: "Property", href: "/properties" },
     { icon: Settings, label: "Service", href: "#service" },
+    { icon: House, label: "Home Management", href: "/home-management" },
     { icon: Settings, label: "Contact", href: "#contact" },
     { icon: HelpCircle, label: "FAQs", href: "#faqs" },
   ];
@@ -59,7 +61,8 @@ const Header = () => {
       "/log-in",
       "/sign-up",
       "/learn-more",
-      "/get-started"
+      "/get-started",
+      "/home-management",
     ];
     const isPathIncluded = paths.includes(pathname);
 
