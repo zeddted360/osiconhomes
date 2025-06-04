@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const connection = { isConnected: false };
 
 export const connectDb = async () => {
-    const uri = process.env.MONGO_URI || process.env.MONGO_ATLAS_URI; 
+    const uri = process.env.MONGO_ATLAS_URI; 
     try {
         if (!uri) {
           throw new Error("MONGO_URI environment variable is not defined");

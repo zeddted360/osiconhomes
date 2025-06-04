@@ -1,10 +1,9 @@
-// lib/email.ts
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
+    user: process.env.ADMIN_EMAIL,
     pass: process.env.EMAIL_PASS,
   },
 });

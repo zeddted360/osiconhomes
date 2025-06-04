@@ -4,12 +4,10 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 
-// Define a type for the user
 type User = {
   id: string;
   email: string;
   username: string;
-  // Add other fields as needed
 };
 import { connectDb } from "@/utils/connectDb";
 
@@ -34,10 +32,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             throw new Error("Please provide both email/username and password");
           }
 
-          // Ensure MongoDB connection
           await connectDb();
 
-          // Single database query for both models
           const user =
             (await Bde.findOne({
               $or: [
@@ -51,7 +47,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 { username: credentials.emailOrUsername },
               ],
             }).lean());
-          
 
           if (!user) {
             throw new Error("Invalid email/username or password");
@@ -65,8 +60,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (!isMatchedPassword) {
             throw new Error("Invalid email/username or password");
           }
-          console.log("isMatchPass", isMatchedPassword);
-
           // Ensure the user object matches NextAuth's expected shape
           const userWithoutPassword: User = {
             id: user._id.toString(),
@@ -79,10 +72,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         } catch (error) {
           throw new Error(
             error instanceof Error
-              ? error.message
+              ? "Error during sign in"
               : "Authentication failed. Please try again."
           );
-          return null;
         }
       },
     }),
@@ -110,6 +102,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   pages: {
     signIn: "/log-in",
-    error: "/log-in", // Redirect to the login page on error
+    error: "/log-in",
   },
 });

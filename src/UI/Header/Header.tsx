@@ -12,20 +12,19 @@ import {
   LogIn,
   LogOut,
   User,
-  House
+  House,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { data: session, status } = useSession();
-
+  const { user, status, logout } = useAuth(); // Use the context
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,13 +74,17 @@ const Header = () => {
           router.push(`/${item.href}`);
         }
       }
+      // If the current path is not in the list, navigate to the homepage with the section hash
+      else {
+        router.push(`/${item.href}`);
+      }
     } else {
       router.push(item.href);
     }
   };
 
   const handleSignOut = async () => {
-    await signOut({ redirect: false });
+    await logout(); 
     router.push("/log-in");
     if (isMenuOpen) toggleMenu();
   };
@@ -99,7 +102,7 @@ const Header = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-amber-400/5 via-orange-400/3 to-amber-400/5 pointer-events-none" />
 
         <div className="relative flex items-center justify-between p-4 lg:px-12 max-w-7xl mx-auto">
-          {/* Logo (Unchanged) */}
+          {/* Logo */}
           <Link
             href="/"
             className="flex items-center space-x-3"
@@ -174,7 +177,7 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-3">
             {status === "loading" ? (
               <div className="w-24 h-6 bg-gray-200 rounded animate-pulse" />
-            ) : session?.user ? (
+            ) : user ? (
               <>
                 <div
                   className={`flex items-center space-x-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
@@ -185,7 +188,7 @@ const Header = () => {
                 >
                   <User className="w-4 h-4 text-amber-600" />
                   <span className="font-semibold text-sm truncate max-w-[120px]">
-                    {session.user.username}
+                    {user.username}
                   </span>
                 </div>
                 <button
@@ -293,12 +296,12 @@ const Header = () => {
               <div className="border-t border-amber-100 pt-6 space-y-4">
                 {status === "loading" ? (
                   <div className="w-full h-10 bg-gray-200 rounded animate-pulse mx-auto" />
-                ) : session?.user ? (
+                ) : user ? (
                   <>
                     <div className="flex items-center justify-center space-x-2 px-3 py-2 bg-amber-50 rounded-full">
                       <User className="w-5 h-5 text-amber-600" />
                       <span className="font-semibold text-gray-700 text-sm truncate max-w-[200px]">
-                        {session.user.username}
+                        {user.username}
                       </span>
                     </div>
                     <button

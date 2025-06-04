@@ -86,8 +86,8 @@ const bdeSchema = new mongoose.Schema(
 bdeSchema.pre("save", async function (next) {
 
   if (
-    this.username.toLowerCase() === "marvelouschinazom360" ||
-    this.email.toLowerCase() === "marvelouschinazom360@gmail.com"
+    this.username.toLowerCase() === "osicon-homes558" ||
+    this.email.toLowerCase() === "osiconhomes558@gmail.com"
   ) {
     this.isAdmin = true;
   };

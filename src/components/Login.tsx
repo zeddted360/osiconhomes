@@ -1,9 +1,10 @@
 "use client";
-import { handleCredentialsSignIn } from "@/app/action/handleCredentialsSignIn";
 import Link from "next/link";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { Eye, EyeOff } from "lucide-react"; 
 
 interface LoginProps {
   searchParams: {
@@ -19,7 +20,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full p-3 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition duration-200 disabled:bg-indigo-400"
+      className="w-full p-3 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold hover:from-amber-500 hover:to-orange-600 transition duration-200 disabled:bg-orange-300"
     >
       {pending ? (
         <div className="flex items-center justify-center">
@@ -35,12 +36,18 @@ function SubmitButton() {
 
 export default function Login({ searchParams }: LoginProps) {
   const router = useRouter();
+  const { login } = useAuth();
   const [error, setError] = useState(searchParams?.error || "");
+  const [showPassword, setShowPassword] = useState(false); 
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   async function handleSubmit(formData: FormData) {
     setError("");
     try {
-      await handleCredentialsSignIn(formData);
+      await login(formData);
       router.push("/");
     } catch (err) {
       console.error("Login error:", err);
@@ -53,7 +60,7 @@ export default function Login({ searchParams }: LoginProps) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-100 via-orange-100 to-amber-200 p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Welcome Back
@@ -79,7 +86,7 @@ export default function Login({ searchParams }: LoginProps) {
               name="emailOrUsername"
               type="text"
               required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition duration-200"
               placeholder="Enter email or username"
             />
           </div>
@@ -91,14 +98,28 @@ export default function Login({ searchParams }: LoginProps) {
             >
               Password
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
-              placeholder="••••••••"
-            />
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"} // Toggle input type
+                required
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition duration-200"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-amber-600 transition duration-200 focus:outline-none"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           <SubmitButton />
@@ -119,7 +140,7 @@ export default function Login({ searchParams }: LoginProps) {
           Don't have an account?{" "}
           <Link
             href="/sign-up"
-            className="text-indigo-600 hover:underline font-medium"
+            className="text-amber-600 hover:underline font-medium"
           >
             Sign up
           </Link>

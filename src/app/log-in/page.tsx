@@ -8,7 +8,7 @@ interface SearchParams {
   error?: string;
 }
 export const metadata: Metadata = {
-  title: "Sign Up | Osicon Homes",
+  title: "Sign In | Osicon Homes",
   description:
     "Create an account with Osicon Homes to explore luxury properties in Port Harcourt & Owerri, Nigeria. Sign up now to book inspections and view homes!",
   keywords: [

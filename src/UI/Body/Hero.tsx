@@ -61,6 +61,8 @@ const Hero = () => {
                   <span>Book Inspection</span>
                 </div>
               </Link>
+
+              <div className="bde_container flex justify-center gap-x-4">
                 <Link
                   href="/bde-join"
                   className="group relative px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-xl shadow-md hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden focus:outline-none focus:ring-2 focus:ring-amber-400"
@@ -72,26 +74,27 @@ const Hero = () => {
                     <span>Become a BDE</span>
                   </div>
                 </Link>
-              {session?.user &&
-                <Link
-                  href="/bde"
-                  className="group relative px-6 py-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-semibold rounded-xl shadow-md hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  aria-label="View BDE's"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative flex items-center justify-center space-x-2">
-                    <Eye className="w-5 h-5" />
-                    <span>View BDE&apos;s</span>
-                  </div>
-                </Link>
-              }
+                {session?.user && (
+                  <Link
+                    href="/bde"
+                    className="group relative px-6 py-3 bg-gradient-to-r from-gray-400 text-white font-semibold rounded-xl shadow-md hover:shadow-amber-500/30 transition-all duration-300 transform hover:scale-105 overflow-hidden focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    aria-label="View BDE's"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="relative flex items-center justify-center space-x-2">
+                      <Eye className="w-5 h-5" />
+                      <span>View BDE&apos;s</span>
+                    </div>
+                  </Link>
+                )}
+              </div>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6">
               <div className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-4">
                 <div className="text-2xl sm:text-3xl font-bold text-white">
-                  500+
+                  250+
                 </div>
                 <div className="text-white/80 text-xs sm:text-sm">
                   Properties Sold
@@ -99,7 +102,7 @@ const Hero = () => {
               </div>
               <div className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-4">
                 <div className="text-2xl sm:text-3xl font-bold text-white">
-                  15+
+                  5+
                 </div>
                 <div className="text-white/80 text-xs sm:text-sm">
                   Years Experience

@@ -5,6 +5,7 @@ import Header from "@/UI/Header/Header";
 import Footer from "@/UI/Footer";
 import { Toaster } from "react-hot-toast";
 import SessionWrapper from "@/components/SessionWrapper";
+import { AuthProvider } from "@/context/AuthContext";
 export const metadata: Metadata = {
   title: {
     default: "Osicon Homes - Real Estate & Construction in Nigeria",
@@ -64,9 +65,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={`antialiased`}>
         <Toaster position="top-right" reverseOrder={false} />
         <SessionWrapper>
-          <Header />
-          {children}
-          <Footer />
+          <AuthProvider>
+            <Header />
+            {children}
+            <Footer />
+          </AuthProvider>
         </SessionWrapper>
       </body>
     </html>
