@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import PropertiesList from "@/components/PropertiesList";
 
-// Mock data (in a real app, fetch this from an API or database)
+// Expanded properties data with images from Pexels.com
 const propertiesData = [
   {
     id: 1,
@@ -9,8 +9,10 @@ const propertiesData = [
     type: "Luxury Apartment",
     state: "Imo",
     city: "Owerri",
-    image: "/property1.jpg",
-    description: "A modern luxury apartment in the heart of Owerri.",
+    image:
+      "https://images.pexels.com/photos/164558/pexels-photo-164558.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A modern luxury apartment in the heart of Owerri with stunning city views.",
   },
   {
     id: 2,
@@ -18,17 +20,21 @@ const propertiesData = [
     type: "Family Home",
     state: "Rivers",
     city: "Port Harcourt",
-    image: "/property2.jpg",
-    description: "A spacious family home with a garden in Port Harcourt.",
+    image:
+      "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A spacious family home with a garden in a serene neighborhood of Port Harcourt.",
   },
   {
     id: 3,
-    name: "Commercial Space in Obinze",
+    name: "Commercial Space in Abuja",
     type: "Commercial Space",
-    state: "Imo",
-    city: "Obinze",
-    image: "/property3.jpg",
-    description: "A commercial space perfect for businesses in Obinze.",
+    state: "FCT",
+    city: "Abuja",
+    image:
+      "https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A commercial space perfect for businesses in the bustling area of Obinze.",
   },
   {
     id: 4,
@@ -36,27 +42,97 @@ const propertiesData = [
     type: "Land",
     state: "Rivers",
     city: "Port Harcourt",
-    image: "/property1.jpg",
-    description: "A large plot of land for development in Port Harcourt.",
+    image:
+      "https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A large plot of land ideal for development projects in Port Harcourt.",
+  },
+  {
+    id: 5,
+    name: "Beachfront Villa in Lagos",
+    type: "Villa",
+    state: "Lagos",
+    city: "Lagos",
+    image:
+      "https://images.pexels.com/photos/3288102/pexels-photo-3288102.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A luxurious beachfront villa in Lagos with private access to the shore.",
+  },
+  {
+    id: 6,
+    name: "Duplex in Enugu",
+    type: "Duplex",
+    state: "Enugu",
+    city: "Enugu",
+    image:
+      "https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A modern duplex in Enugu, perfect for families looking for space and comfort.",
+  },
+  {
+    id: 7,
+    name: "Office Space in Abuja",
+    type: "Office Space",
+    state: "FCT",
+    city: "Abuja",
+    image:
+      "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A modern office space in the business district of Abuja, ready for immediate use.",
+  },
+  {
+    id: 8,
+    name: "Penthouse in Ikeja",
+    type: "Penthouse",
+    state: "Lagos",
+    city: "Ikeja",
+    image:
+      "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A luxurious penthouse in Ikeja with panoramic views of the city.",
+  },
+  {
+    id: 9,
+    name: "Farmland in Ibadan",
+    type: "Land",
+    state: "Oyo",
+    city: "Ibadan",
+    image:
+      "https://images.pexels.com/photos/1628086/pexels-photo-1628086.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A vast farmland in Ibadan, ideal for agricultural projects or investment.",
+  },
+  {
+    id: 10,
+    name: "Bungalow in Calabar",
+    type: "Bungalow",
+    state: "Cross River",
+    city: "Calabar",
+    image:
+      "https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description:
+      "A cozy bungalow in Calabar, perfect for small families or retirees.",
   },
 ];
 
-// SEO Metadata
+// SEO Metadata (unchanged)
 export const metadata: Metadata = {
   title: "Properties | Osicon Homes",
   description:
-    "Explore luxury properties in Port Harcourt & Owerri, Nigeria with Osicon Homes. Filter by property type, state, and city to find your dream home!",
+    "Explore luxury properties in Port Harcourt, Owerri, Lagos, Abuja, and more with Osicon Homes. Filter by property type, state, and city to find your dream home!",
   keywords: [
     "properties Port Harcourt",
     "luxury homes Owerri",
     "Osicon Homes properties",
     "real estate Nigeria",
     "commercial spaces Obinze",
+    "villas Lagos",
+    "office spaces Abuja",
   ],
   openGraph: {
     title: "Properties | Osicon Homes",
     description:
-      "Explore properties in Port Harcourt & Owerri with Osicon Homes. Filter by type, state, and city!",
+      "Explore properties in Port Harcourt, Owerri, Lagos, Abuja, and more with Osicon Homes. Filter by type, state, and city!",
     url: "https://www.osiconhomes.com/properties",
     siteName: "Osicon Homes",
     images: [
@@ -74,7 +150,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Properties | Osicon Homes",
     description:
-      "Explore properties in Port Harcourt & Owerri with Osicon Homes. Filter by type, state, and city!",
+      "Explore properties in Port Harcourt, Owerri, Lagos, Abuja, and more with Osicon Homes. Filter by type, state, and city!",
     images: ["https://www.osiconhomes.com/twitter-image-properties.jpg"],
     creator: "@OsiconHomes",
   },

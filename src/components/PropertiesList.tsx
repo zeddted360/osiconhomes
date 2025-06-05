@@ -166,6 +166,9 @@ const PropertiesList = ({ initialProperties }: PropertiesListProps) => {
                 width={300}
                 height={200}
                 className="w-full h-48 object-cover rounded-lg mb-4"
+                onError={(e) => {
+                  e.currentTarget.src = "/fallback-property-image.webp";
+                }}
               />
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
                 {property.name}
@@ -182,7 +185,7 @@ const PropertiesList = ({ initialProperties }: PropertiesListProps) => {
               </p>
               <Link
                 href={`/properties/${property.id}`}
-                className="inline-block px-4 py-2 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 transition-colors duration-300"
+                className="px-4 py-2 hidden bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 transition-colors duration-300"
               >
                 View Details
               </Link>

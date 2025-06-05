@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { Eye, EyeOff } from "lucide-react"; 
+import { Eye, EyeOff } from "lucide-react";
+import ForgotPasswordDialog from "@/components/ForgotPasswordDialog"; // New dialog component
 
 interface LoginProps {
   searchParams: {
@@ -38,7 +39,8 @@ export default function Login({ searchParams }: LoginProps) {
   const router = useRouter();
   const { login } = useAuth();
   const [error, setError] = useState(searchParams?.error || "");
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false); // State for dialog
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -50,7 +52,6 @@ export default function Login({ searchParams }: LoginProps) {
       await login(formData);
       router.push("/");
     } catch (err) {
-      console.error("Login error:", err);
       if (err instanceof Error) {
         setError(err.message);
       } else {
@@ -102,7 +103,7 @@ export default function Login({ searchParams }: LoginProps) {
               <input
                 id="password"
                 name="password"
-                type={showPassword ? "text" : "password"} // Toggle input type
+                type={showPassword ? "text" : "password"}
                 required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition duration-200"
                 placeholder="••••••••"
@@ -118,6 +119,15 @@ export default function Login({ searchParams }: LoginProps) {
                 ) : (
                   <Eye className="w-5 h-5" />
                 )}
+              </button>
+            </div>
+            <div className="text-right">
+              <button
+                type="button"
+                onClick={() => setIsForgotPasswordOpen(true)}
+                className="text-sm text-amber-600 hover:underline"
+              >
+                Forgot Password?
               </button>
             </div>
           </div>
@@ -146,6 +156,12 @@ export default function Login({ searchParams }: LoginProps) {
           </Link>
         </p>
       </div>
+
+      {/* Forgot Password Dialog */}
+      <ForgotPasswordDialog
+        isOpen={isForgotPasswordOpen}
+        onClose={() => setIsForgotPasswordOpen(false)}
+      />
     </div>
   );
 }

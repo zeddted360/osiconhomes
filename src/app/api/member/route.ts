@@ -1,14 +1,18 @@
 import { Bde } from "@/models/bde";
 import { Member } from "@/models/member";
+import { connectDb } from "@/utils/connectDb";
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
+import { sendEmail } from "@/utils/email";
 
 export const POST = async (request: NextRequest) => {
   try {
+    await connectDb();
     // Validate request body
     const body = await request.json().catch(() => null);
     if (!body) {
       return NextResponse.json(
-        { success: false, message: "Invalid request body" },
+        { success: false, message: "Invalid request" },
         { status: 400 }
       );
     }
@@ -56,59 +60,134 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    // Check for existing member
+    // Check for existing member or BDE
     const isMemberExist = await Member.findOne({
       $or: [{ email }, { username }],
     });
-      
-      const isBdeExist = await Bde.findOne({
-          $or: [{ email }, { username }],
-      });
+
+    const isBdeExist = await Bde.findOne({
+      $or: [{ email }, { username }],
+    });
 
     if (isMemberExist || isBdeExist) {
-      // If either a member or BDE with the same email or username exists
       return NextResponse.json(
-        { success: false, message: "Username or email already exists or you're a BDE" },
+        { success: false, message: "Username or email already exists" },
         { status: 409 }
       );
     }
 
     // Validate referral code
-    const referred_By = await Bde.findOne({ referralCode });
-    if (!referred_By) {
+    const referredBy = await Bde.findOne({ referralCode });
+    if (!referredBy) {
       return NextResponse.json(
         { success: false, message: "Invalid referral code" },
         { status: 400 }
       );
     }
 
-    // Create member and update referral in a transaction
-    const createdMember = await Member.create({
-      firstname,
-      lastname,
-      username,
-      email: email.toLowerCase(), // Normalize email
-      phone,
-      password,
-      referredBy: referred_By._id,
-    });
+    // Generate a verification token and expiration
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
 
-    await Bde.findByIdAndUpdate(
-      referred_By._id,
-      { $push: { referred: createdMember._id } },
-      { new: true }
-    );
 
-    return NextResponse.json(
-      { success: true, message: "Member registration successful" },
-      { status: 201 }
-    );
+    try {
+        // Create member
+        const createdMember = await Member.create({
+              firstname,
+              lastname,
+              username,
+              email: email.toLowerCase(),
+              phone,
+              password,
+              referredBy: [referredBy._id],
+              isEmailVerified: false,
+              emailVerificationToken: verificationToken,
+              emailVerificationTokenExpires: verificationTokenExpires,
+            }
+        );
+        console.log("the created member is ", createdMember);
+
+        // Update BDE's referred array
+        await Bde.findByIdAndUpdate(
+          referredBy._id,
+          { $push: { referred: createdMember._id } },
+          { new: true }
+        );
+
+      // Check if createdMember is defined before proceeding
+      if (!createdMember) {
+        throw new Error("Failed to create member");
+      }
+
+      // Send verification email to the user
+      const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/verify-email?token=${verificationToken}&id=${createdMember._id}`;
+      const emailResult = await sendEmail(
+        email,
+        "Verify Your Email Address - Osicon Homes",
+        {
+          firstname,
+          lastname,
+          verificationLink,
+        }
+      );
+
+      if (!emailResult.success) {
+        console.error("Failed to send verification email:", emailResult.error);
+        await Member.deleteOne({ _id: createdMember._id });
+        return NextResponse.json(
+          { success: false, message: "Failed to send verification email" },
+          { status: 500 }
+        );
+      }
+
+      // Send email notification to admin
+      const adminEmailResult = await sendEmail(
+        process.env.ADMIN_EMAIL as string,
+        "New Member Registration",
+        {
+          firstname,
+          lastname,
+          username,
+          email,
+          phone,
+          referralCode,
+        }
+      );
+
+      if (!adminEmailResult.success) {
+        console.error(
+          "Failed to send admin notification email:",
+          adminEmailResult.error
+        );
+      }
+
+      return NextResponse.json(
+        {
+          success: true,
+          message:
+            "Member successfully registered. Please check your email to verify your account.",
+        },
+        { status: 201 }
+      );
+    } catch (transactionError) {
+      console.error("Transaction error:", transactionError);
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Error during registration transaction",
+        },
+        { status: 500 }
+      );
+    } 
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(
       {
-        success: false, // Fixed: Changed to false for error case
-        message: "An error occurred during registration",
+        success: false,
+        message:
+          error instanceof Error
+            ? error.message
+            : "An error occurred during registration",
       },
       { status: 500 }
     );

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { User, Mail, Lock, Eye, EyeOff, Phone } from "lucide-react"; // Added Phone icon
 import Link from "next/link";
 import SuccessMessage from "./SuccessMessage";
+import toast from "react-hot-toast";
 
 // Form data type
 interface FormData {
@@ -148,6 +149,10 @@ const SignUpForm = () => {
 
       if (response.ok && result.success) {
         setIsSubmitted(true);
+        toast.success(
+          "Verification email sent! Please check your inbox and make payment.",
+          { duration: 5000 }
+        );
       } else {
         setErrors({
           server: result.message || "An error occurred during signup",

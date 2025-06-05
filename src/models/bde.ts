@@ -1,8 +1,7 @@
-import mongoose, { Document, Model } from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
-
-// Interface for User document
-interface IBde extends Document {
+// Interface for Bde document
+export interface IBde extends Document {
   firstname: string;
   lastname: string;
   username: string;
@@ -11,11 +10,18 @@ interface IBde extends Document {
   password: string;
   referralCode?: string;
   referred: string[];
+  isAdmin: boolean;
+  isVerified: boolean;
+  isEmailVerified: boolean;
+  emailVerificationToken?: string;
+  emailVerificationTokenExpires?: Date;
+  resetPasswordToken: string | undefined;
+  resetPasswordTokenExpires: Date | undefined;
 
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-// Interface for User model
+// Interface for Bde model
 interface IBdeModel extends Model<IBde> {
   findByEmail(email: string): Promise<IBde | null>;
 }
@@ -30,7 +36,7 @@ const bdeSchema = new mongoose.Schema(
     },
     lastname: {
       type: String,
-      required: [true, "last name is required"],
+      required: [true, "Last name is required"],
       trim: true,
       minlength: [3, "Last name must be at least 3 characters long"],
     },
@@ -38,7 +44,7 @@ const bdeSchema = new mongoose.Schema(
       type: String,
       required: [true, "Username is required"],
       trim: true,
-      unique:true,
+      unique: true,
       minlength: [3, "Username must be at least 3 characters long"],
     },
     email: {
@@ -60,11 +66,21 @@ const bdeSchema = new mongoose.Schema(
     },
     isAdmin: {
       type: Boolean,
-      default:false,
+      default: false,
     },
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerificationToken: {
+      type: String,
+    },
+    emailVerificationTokenExpires: {
+      type: Date,
     },
     referralCode: {
       type: String,
@@ -77,6 +93,12 @@ const bdeSchema = new mongoose.Schema(
         ref: "Member",
       },
     ],
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordTokenExpires: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -84,15 +106,15 @@ const bdeSchema = new mongoose.Schema(
 );
 
 bdeSchema.pre("save", async function (next) {
-
   if (
     this.username.toLowerCase() === "osicon-homes558" ||
     this.email.toLowerCase() === "osiconhomes558@gmail.com"
   ) {
     this.isAdmin = true;
-  };
+  }
 
-    if (!this.isModified("password")) return next();
+  // Hash password if modified
+  if (!this.isModified("password")) return next();
 
   try {
     const salt = await bcrypt.genSalt(10);
@@ -103,8 +125,7 @@ bdeSchema.pre("save", async function (next) {
   }
 });
 
-
-
+// Method to compare passwords
 bdeSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {
@@ -114,8 +135,6 @@ bdeSchema.methods.comparePassword = async function (
     throw new Error("Error comparing passwords");
   }
 };
-
-
 
 export const Bde = (mongoose.models.Bde ||
   mongoose.model<IBde, IBdeModel>("Bde", bdeSchema)) as IBdeModel;

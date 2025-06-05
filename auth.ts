@@ -1,15 +1,24 @@
-import { Bde } from "@/models/bde";
-import { Member } from "@/models/member";
+import { Bde, IBde } from "@/models/bde";
+import { Member, IMember } from "@/models/member";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
+import { connectDb } from "@/utils/connectDb";
+import mongoose from "mongoose";
 
 type User = {
   id: string;
   email: string;
   username: string;
 };
-import { connectDb } from "@/utils/connectDb";
+
+// Extend the IMember and IBde interfaces to include the comparePassword method
+interface IUser extends mongoose.Document {
+  email: string;
+  username: string;
+  isEmailVerified: boolean;
+  password: string;
+  comparePassword(candidatePassword: string): Promise<boolean>;
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -34,33 +43,41 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           await connectDb();
 
-          const user =
-            (await Bde.findOne({
-              $or: [
-                { email: credentials.emailOrUsername },
-                { username: credentials.emailOrUsername },
-              ],
-            }).lean()) ||
+          // Explicitly type user as a union of IMember and IBde
+          let user: any =
             (await Member.findOne({
               $or: [
                 { email: credentials.emailOrUsername },
                 { username: credentials.emailOrUsername },
               ],
-            }).lean());
+            })) ||
+            (await Bde.findOne({
+              $or: [
+                { email: credentials.emailOrUsername },
+                { username: credentials.emailOrUsername },
+              ],
+            }));
 
           if (!user) {
-            throw new Error("Invalid email/username or password");
+            throw new Error("Invalid credentials. Please try again.");
           }
 
-          // Verify password
-          const isMatchedPassword = await bcrypt.compare(
-            credentials.password as string,
-            user.password
-          );
-          if (!isMatchedPassword) {
-            throw new Error("Invalid email/username or password");
+          // Check if email is not verified
+          if (!user.isEmailVerified) {
+            throw new Error(
+              "Please verify your email address before logging in."
+            );
           }
-          // Ensure the user object matches NextAuth's expected shape
+
+          // Use the comparePassword method from the model
+          const isMatchedPassword = await user.comparePassword(
+            credentials.password as string
+          );
+
+          if (!isMatchedPassword) {
+            throw new Error("Invalid credentials. Please try again.");
+          }
+
           const userWithoutPassword: User = {
             id: user._id.toString(),
             email: user.email,
@@ -68,13 +85,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           };
 
           return userWithoutPassword;
-
         } catch (error) {
-          throw new Error(
-            error instanceof Error
-              ? "Error during sign in"
-              : "Authentication failed. Please try again."
-          );
+          if (
+            error instanceof Error &&
+            error.message === "Invalid credentials. Please try again."
+          ) {
+            console.error("auth error", error.message);
+            return null; // Return null to indicate authentication failure
+          }
+
+          throw new Error("Authentication failed. Please try again.");
         }
       },
     }),

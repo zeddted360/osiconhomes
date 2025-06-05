@@ -54,10 +54,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         password: formData.get("password"),
         redirect: false, 
       });
+console.log("Login result:", result);
+      if (result?.error === "CredentialsSignin") {
+        throw new Error("Invalid credentials. Please try again.");
+      };
 
-      if (result?.error) {
-        throw new Error("Something went wrong please try again");
-      }
+      if (result?.error === "Configuration") {
+        throw new Error("Email not verified or account not found");
+      };
+
     } catch (error) {
       throw error;
     }

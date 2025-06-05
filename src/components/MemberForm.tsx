@@ -42,7 +42,7 @@ const MemberForm = () => {
     confirmPassword: "",
     referralCode: "",
   });
-    const router = useRouter();
+  const router = useRouter();
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
@@ -105,24 +105,27 @@ const MemberForm = () => {
     }
 
     try {
+      const { confirmPassword, ...payload } = formData; 
       const response = await fetch("/api/member", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
-        const result = await response.json();
-        if (response.ok && result.success) {
-          toast.success("Registration successful! Redirecting...");
-            setIsSubmitted(true);
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-          router.push("/");
+      const result = await response.json();
+      if (response.ok && result.success) {
+        toast.success(result.message, { duration: 5000 }); 
+        setIsSubmitted(true);
+        await new Promise((resolve) => setTimeout(resolve, 5000)); 
+        router.push("/log-in"); 
       } else {
         setErrors({ server: result.message || "An error occurred" });
+        toast.error(result.message || "An error occurred");
       }
     } catch {
       setErrors({ server: "Network error, please try again later" });
+      toast.error("Network error, please try again later");
     } finally {
-        setIsPending(false);
+      setIsPending(false);
     }
   };
 
@@ -133,10 +136,8 @@ const MemberForm = () => {
 
   const inputStyles =
     "peer pl-12 pt-5 pb-2 border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 rounded-2xl shadow-md bg-white";
-  const labelStyles = (
-    value: string | undefined,
-    error?: string
-  ) => `absolute left-12 top-1/2 transform -translate-y-1/2 text-sm transition-all duration-300
+  const labelStyles = (value: string | undefined, error?: string) =>
+    `absolute left-12 top-1/2 transform -translate-y-1/2 text-sm transition-all duration-300
     ${
       value || error
         ? "left-10 top-0 text-xs text-amber-600 -translate-y-1/2 bg-white px-1"
@@ -151,98 +152,94 @@ const MemberForm = () => {
       animate="visible"
       className="max-w-xl mx-auto bg-gradient-to-br from-white to-amber-50 p-8 rounded-3xl shadow-xl"
     >
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {Object.entries(formData).map(([key, value]) => {
-            const Icon =
-              key === "email"
-                ? Mail
-                : key === "password" || key === "confirmPassword"
-                ? Lock
-                : key === "phone"
-                ? Phone
-                : key === "referralCode"
-                ? Code
-                : User;
-            const type = key.includes("password")
-              ? key === "password"
-                ? showPassword
-                  ? "text"
-                  : "password"
-                : showConfirmPassword
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {Object.entries(formData).map(([key, value]) => {
+          const Icon =
+            key === "email"
+              ? Mail
+              : key === "password" || key === "confirmPassword"
+              ? Lock
+              : key === "phone"
+              ? Phone
+              : key === "referralCode"
+              ? Code
+              : User;
+          const type = key.includes("password")
+            ? key === "password"
+              ? showPassword
                 ? "text"
                 : "password"
-              : key === "email"
-              ? "email"
-              : key === "phone"
-              ? "tel"
-              : "text";
-            const toggleShow =
-              key === "password"
-                ? () => setShowPassword(!showPassword)
-                : key === "confirmPassword"
-                ? () => setShowConfirmPassword(!showConfirmPassword)
-                : undefined;
-            const showToggle = key.includes("password");
+              : showConfirmPassword
+              ? "text"
+              : "password"
+            : key === "email"
+            ? "email"
+            : key === "phone"
+            ? "tel"
+            : "text";
+          const toggleShow =
+            key === "password"
+              ? () => setShowPassword(!showPassword)
+              : key === "confirmPassword"
+              ? () => setShowConfirmPassword(!showConfirmPassword)
+              : undefined;
+          const showToggle = key.includes("password");
 
-            return (
-              <div key={key} className="relative">
-                <Input
-                  id={key}
-                  name={key}
-                  type={type}
-                  value={value}
-                  onChange={handleInputChange}
-                  className={inputStyles}
-                />
-                <Icon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-400" />
-                {showToggle && (
-                  <button
-                    type="button"
-                    onClick={toggleShow}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-amber-400"
-                    aria-label="Toggle password visibility"
-                  >
-                    {(key === "password" && showPassword) ||
-                    (key === "confirmPassword" && showConfirmPassword) ? (
-                      <EyeOff />
-                    ) : (
-                      <Eye />
-                    )}
-                  </button>
-                )}
-                <label
-                  htmlFor={key}
-                  className={labelStyles(
-                    value,
-                    errors[key as keyof FormErrors]
-                  )}
+          return (
+            <div key={key} className="relative">
+              <Input
+                id={key}
+                name={key}
+                type={type}
+                value={value}
+                onChange={handleInputChange}
+                className={inputStyles}
+              />
+              <Icon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-400" />
+              {showToggle && (
+                <button
+                  type="button"
+                  onClick={toggleShow}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-amber-400"
+                  aria-label="Toggle password visibility"
                 >
-                  {key
-                    .replace(/([A-Z])/g, " $1")
-                    .replace(/^./, (str) => str.toUpperCase())}
-                </label>
-                {errors[key as keyof FormErrors] && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors[key as keyof FormErrors]}
-                  </p>
-                )}
-              </div>
-            );
-          })}
-          {errors.server && (
-            <p className="text-red-500 text-sm text-center">{errors.server}</p>
-          )}
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              type="submit"
-              disabled={isPending}
-              className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 rounded-xl shadow-lg"
-            >
-              {isPending ? "Submitting..." : "Register"}
-            </Button>
-          </motion.div>
-        </form>
-    
+                  {(key === "password" && showPassword) ||
+                  (key === "confirmPassword" && showConfirmPassword) ? (
+                    <EyeOff />
+                  ) : (
+                    <Eye />
+                  )}
+                </button>
+              )}
+              <label
+                htmlFor={key}
+                className={labelStyles(value, errors[key as keyof FormErrors])}
+              >
+                {key
+                  .replace(/([A-Z])/g, " $1")
+                  .replace(/^./, (str) => str.toUpperCase())}
+              </label>
+              {errors[key as keyof FormErrors] && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors[key as keyof FormErrors]}
+                </p>
+              )}
+            </div>
+          );
+        })}
+        {errors.server && (
+          <p className="text-red-500 text-sm text-center">{errors.server}</p>
+        )}
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 rounded-xl shadow-lg"
+          >
+            {isPending ? "Submitting..." : "Register"}
+          </Button>
+        </motion.div>
+      </form>
     </motion.div>
   );
 };

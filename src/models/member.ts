@@ -1,8 +1,8 @@
-import mongoose, { Document, Model } from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 
 // Interface for User document
-interface IMember extends Document {
+export interface IMember extends Document {
   firstname: string;
   lastname: string;
   username: string;
@@ -10,6 +10,11 @@ interface IMember extends Document {
   phone: string;
   password: string;
   referredBy: string;
+  isEmailVerified: boolean;
+  emailVerificationToken?: string;
+  emailVerificationTokenExpires?: Date;
+  resetPasswordToken: string | undefined;
+  resetPasswordTokenExpires: Date | undefined;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -28,7 +33,7 @@ const memberSchema = new mongoose.Schema(
     },
     lastname: {
       type: String,
-      required: [true, "last name is required"],
+      required: [true, "Last name is required"],
       trim: true,
       minlength: [3, "Last name must be at least 3 characters long"],
     },
@@ -36,6 +41,7 @@ const memberSchema = new mongoose.Schema(
       type: String,
       required: [true, "Username is required"],
       trim: true,
+      unique: true, // Added unique constraint to match Bde model
       minlength: [3, "Username must be at least 3 characters long"],
     },
     email: {
@@ -61,6 +67,22 @@ const memberSchema = new mongoose.Schema(
         ref: "Bde",
       },
     ],
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerificationToken: {
+      type: String,
+    },
+    emailVerificationTokenExpires: {
+      type: Date,
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordTokenExpires: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -80,7 +102,6 @@ memberSchema.pre("save", async function (next) {
   }
 });
 
-// Method to compare passwords
 memberSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {
@@ -91,15 +112,18 @@ memberSchema.methods.comparePassword = async function (
   }
 };
 
-// Static method to find user by email
 memberSchema.statics.findByEmail = function (email: string) {
   return this.findOne({ email: email.toLowerCase() });
 };
 
-// Handle duplicate key errors
 memberSchema.post("save", function (error: any, doc: any, next: any) {
   if (error.code === 11000) {
-    next(new Error("Email already exists"));
+    const field = Object.keys(error.keyValue)[0];
+    next(
+      new Error(
+        `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`
+      )
+    );
   } else {
     next(error);
   }

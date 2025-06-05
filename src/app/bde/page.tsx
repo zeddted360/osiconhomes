@@ -48,7 +48,6 @@ export default async function BdePage() {
   return (
     <section className="relative min-h-screen overflow-hidden">
       <Toaster position="top-right" />
-
       {/* Enhanced Background with Multiple Layers */}
       <div className="absolute inset-0">
         <Image
