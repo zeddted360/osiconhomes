@@ -90,7 +90,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             error instanceof Error &&
             error.message === "Invalid credentials. Please try again."
           ) {
-            console.error("auth error", error.message);
             return null; // Return null to indicate authentication failure
           }
 
